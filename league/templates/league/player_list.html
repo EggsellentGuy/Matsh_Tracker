@@ -1,0 +1,8 @@
+<h1>Players</h1>
+<ul>
+    {% for player in players %}
+        <li>{{ player.nickname }}</li>
+    {% empty %}
+        <li>Players is empty</li>
+    {% endfor %}
+</ul>
