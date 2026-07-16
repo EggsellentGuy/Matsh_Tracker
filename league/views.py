@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Player
 
 
@@ -20,12 +20,15 @@ def player_create(request):
                 "league/player_form.html",
                 context={"error": "Nickname cannot be empty"},
             )
-        if Player.objects.filter(nickname=nickname):
+        if Player.objects.filter(nickname=nickname).exists():
             return render(
                 request,
                 "league/player_form.html",
                 context={"error": "Nickname is already used"},
             )
+        Player.objects.create(nickname=nickname)
+        return redirect("player_list")
+
     return render(
         request,
         "league/player_form.html",
