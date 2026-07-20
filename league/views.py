@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .forms import PlayerForm
 from .models import Player
 
 
@@ -13,24 +14,17 @@ def player_list(request):
 
 def player_create(request):
     if request.method == "POST":
-        nickname = request.POST.get("nickname", "").strip()
-        if not nickname:
-            return render(
-                request,
-                "league/player_form.html",
-                context={"error": "Nickname cannot be empty"},
-            )
-        if Player.objects.filter(nickname=nickname).exists():
-            return render(
-                request,
-                "league/player_form.html",
-                context={"error": "Nickname is already used"},
-            )
-        Player.objects.create(nickname=nickname)
-        return redirect("player_list")
+        form = PlayerForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("player_list")
+
+    else:
+        form = PlayerForm()
 
     return render(
         request,
         "league/player_form.html",
-        context={},
+        {"form": form},
     )

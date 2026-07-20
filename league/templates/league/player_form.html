@@ -1,8 +1,5 @@
 <form method="post">
     {% csrf_token %}
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
-    <input type="text" name='nickname'>
+    {{ form.as_p }}
     <button type="submit">Save</button>
 </form>
